@@ -303,7 +303,7 @@ BabelBrain is required for the acoustic simulation notebook.
 Moon Jeong  
 Dora Mackie
 
-Credit to: Zadeh et al (2025)
+Credit to Zadeh et al (2025)
 
 ---
 
