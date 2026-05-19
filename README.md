@@ -298,7 +298,7 @@ BabelBrain is required for the acoustic simulation notebook.
 
 ---
 
-## Authors for
+## Authors
 
 Moon Jeong  
 Dora Mackie
