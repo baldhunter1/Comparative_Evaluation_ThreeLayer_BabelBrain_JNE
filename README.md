@@ -1,15 +1,14 @@
-````markdown
 # Comparative Evaluation of Three-Layer and BabelBrain-Based Skull Transmission Estimates
 
-This repository contains scripts and notebooks for comparing analytical and simulation-based estimates of transcranial ultrasound pressure transmission through the human skull.
+This repository contains scripts and notebooks for comparing three-layer model and BabelBrain simulation-based estimates of transcranial ultrasound stimulation (TUS) pressure transmission through the human skull.
 
 The workflow includes:
 
 1. Extraction of EEG-based scalp-normal trajectories from SimNIBS CHARM outputs.
 2. CT- and ZTE-based skull-thickness estimation along EEG-normal trajectories.
 3. EEG-trajectory-based BabelBrain acoustic simulations using CT- and ZTE-derived skull masks.
-4. Three-layer analytical pressure-transmission modeling based on skull thickness and ultrasound frequency.
-5. Comparison of pressure transmission estimates across CT, ZTE, and analytical modeling approaches.
+4. Three-layer analytical pressure-transmission modeling based on skull thickness and ultrasound frequency (not included in this repository).
+5. Comparison of pressure transmission estimates across CT, ZTE, and analytical modeling approaches(not included in this repository).
 
 ---
 
@@ -18,16 +17,20 @@ The workflow includes:
 This repository includes code and workflow elements adapted from Zadeh et al. (2025):
 
 **Zadeh AK, Puonti O, Sigurðsson B, Thielscher A, Monchi O, Pichardo S.**  
+
 *Enhancing transcranial ultrasound stimulation planning with MRI-derived skull masks: a comparative analysis with CT-based processing.*  
+
 Journal of Neural Engineering. 2025;22:016020.  
 DOI: `10.1088/1741-2552/adab22`
 
-The EEG-trajectory-based BabelBrain simulation workflow and related processing structure were adapted from the publicly described workflow by Zadeh et al. Additional comments, annotations, and modifications were added here to clarify the workflow and support CT-, ZTE-, and three-layer model comparisons.
+The EEG trajectory-based BabelBrain simulation workflow and related processing structure were adapted from the workflow described by Zadeh et al. Additional comments, annotations, and modifications were added here to clarify the workflow and support comparison of CT-, ZTE-, and three-layer model-based estimates.
 
-The three-layer analytical transmission model implemented in this repository is based on Attali et al. (2023):
+The three-layer analytical transmission model used for comparison is based on Attali et al. (2023):
 
 **Attali D, Tiennot T, Schafer M, Fouragnan E, Sallet J, Caskey CF, Chen R, Darmani G, Bubrick EJ, Butler C, Stagg CJ, Klein-Flügge M, Verhagen L, Yoo SS, Butts Pauly K, Aubry JF.**  
+
 *Three-layer model with absorption for conservative estimation of the maximum acoustic transmission coefficient through the human skull for transcranial ultrasound stimulation.*  
+
 Brain Stimulation. 2023;16:48–55.  
 DOI: `10.1016/j.brs.2022.12.005`
 
@@ -45,7 +48,7 @@ This repository is organized around three major components:
 
 ## Main Files
 
-### `0_eeg_normals.py`
+### `1_eeg_normals.py`
 
 Extracts EEG 10–10 coordinate locations and local scalp-normal vectors from SimNIBS CHARM outputs.
 
@@ -61,41 +64,41 @@ Output columns:
 
 ```text
 Name, R, A, S, Nx, Ny, Nz
-````
+```
 
 These coordinates and inward normal vectors are used for trajectory-based skull-thickness estimation and BabelBrain simulations.
 
 ---
 
-### `1_babelbrain_simulations_eeg.ipynb`
+### `2_babelbrain_simulations_eeg.ipynb`
 
 Runs EEG-trajectory-based BabelBrain acoustic simulations using CT- and ZTE-derived skull masks.
 
 This notebook:
 
-* Loads EEG-normal CSV files.
-* Converts EEG-normal trajectories into Brainsight-style targets.
-* Prepares CT and ZTE acoustic simulation inputs.
-* Runs CT-based acoustic simulations.
-* Runs ZTE-based acoustic simulations.
-* Collects and summarizes BabelBrain output files.
+- Loads EEG-normal CSV files.
+- Converts EEG-normal trajectories into Brainsight-style targets.
+- Prepares CT and ZTE acoustic simulation inputs.
+- Runs CT-based acoustic simulations.
+- Runs ZTE-based acoustic simulations.
+- Collects and summarizes BabelBrain output files.
 
 The notebook was adapted from the Zadeh et al. workflow. Additional comments and section headings were added to clarify the processing steps.
 
 ---
 
-### `CT_eeg_skull_thickness.py`
+### `3_CT_eeg_skull_thickness.py`
 
 Estimates CT-derived skull thickness along EEG-normal trajectories.
 
 This script:
 
-* Searches CT subject folders.
-* Loads each subject's CT image and EEG-normal CSV.
-* Excludes predefined EEG locations.
-* Samples CT intensity along each inward EEG-normal trajectory.
-* Estimates skull thickness from raw CT cortical-bone peaks.
-* Saves diagnostic plots, per-trajectory profiles, QC flags, and summary CSV files.
+- Searches CT subject folders.
+- Loads each subject's CT image and EEG-normal CSV.
+- Excludes predefined EEG locations.
+- Samples CT intensity along each inward EEG-normal trajectory.
+- Estimates skull thickness from raw CT cortical-bone peaks.
+- Saves diagnostic plots, per-trajectory profiles, QC flags, and summary CSV files.
 
 CT threshold:
 
@@ -111,18 +114,18 @@ Sampling window:
 
 ---
 
-### `ZTE_eeg_skull_thickness.py`
+### `4_ZTE_eeg_skull_thickness.py`
 
 Estimates ZTE-derived skull thickness along EEG-normal trajectories.
 
 This script:
 
-* Searches ZTE subject folders.
-* Loads each subject's ZTE image and EEG-normal CSV.
-* Excludes predefined EEG locations.
-* Samples ZTE intensity along each inward EEG-normal trajectory.
-* Estimates skull thickness from raw ZTE high-intensity skull-profile peaks.
-* Saves diagnostic plots, per-trajectory profiles, QC flags, and summary CSV files.
+- Searches ZTE subject folders.
+- Loads each subject's ZTE image and EEG-normal CSV.
+- Excludes predefined EEG locations.
+- Samples ZTE intensity along each inward EEG-normal trajectory.
+- Estimates skull thickness from raw ZTE high-intensity skull-profile peaks.
+- Saves diagnostic plots, per-trajectory profiles, QC flags, and summary CSV files.
 
 ZTE threshold:
 
@@ -162,7 +165,7 @@ m2m_<subject>/eeg_positions/EEG10-10_Neuroelectrics.csv
 Generated using:
 
 ```text
-0_eeg_normals.py
+1_eeg_normals.py
 ```
 
 ### BabelBrain-compatible simulation inputs
@@ -173,14 +176,14 @@ CT- and ZTE-derived skull masks and acoustic simulation inputs are required for 
 
 ## EEG-Normal Extraction
 
-Run `0_eeg_normals.py` in a SimNIBS-compatible conda environment.
+Run `1_eeg_normals.py` in a SimNIBS-compatible conda environment.
 
 Example:
 
 ```bash
 conda activate <path_to_simnibs>/simnibs_env/
 
-python 0_eeg_normals.py \
+python 1_eeg_normals.py \
 ~/Documents/TempForSim/SDR_0p42/m2m_SDR_0p42/SDR_0p42.msh \
 ~/Documents/TempForSim/SDR_0p42/m2m_SDR_0p42/eeg_positions/EEG10-10_Neuroelectrics.csv \
 SDR_0p42_eeg_normals.csv
@@ -235,39 +238,12 @@ In the CT and ZTE skull-thickness scripts, the 250 kHz source folder may be used
 
 The CT and ZTE skull-thickness scripts save:
 
-### Per-trajectory intensity profiles
-
 ```text
 *_profile_<electrode>.csv
-```
-
-### Per-trajectory diagnostic plots
-
-```text
 *_traj_<electrode>.png
-```
-
-### Skull-thickness summary CSV
-
-```text
 *_skull_thickness_summary.csv
-```
-
-### Thin-skull rows below 2.5 mm
-
-```text
 *_skull_thickness_less_than_2p5mm.csv
-```
-
-### Two-peak span rows
-
-```text
 *_two_peak_span_rows.csv
-```
-
-### Flagged QC rows
-
-```text
 *_flagged_QC_rows.csv
 ```
 
@@ -283,10 +259,10 @@ skin -> skull -> brain
 
 The model incorporates:
 
-* Tissue acoustic impedance
-* Skull thickness
-* Ultrasound frequency
-* Skull absorption
+- Tissue acoustic impedance
+- Skull thickness
+- Ultrasound frequency
+- Skull absorption
 
 This model provides a simplified pressure-transmission estimate that can be compared against subject-specific BabelBrain simulations.
 
@@ -314,26 +290,25 @@ BabelBrain is required for the acoustic simulation notebook.
 
 ## Notes
 
-* CT-derived values are treated as the reference imaging-based skull model.
-* ZTE-derived skull-thickness estimates are compared against CT-derived estimates.
-* BabelBrain simulations are used to estimate trajectory-specific acoustic pressure transmission.
-* The three-layer analytical model is used as a simplified comparison model.
-* All scripts contain additional comments to clarify the workflow.
+- CT-derived values are treated as the reference imaging-based skull model.
+- ZTE-derived skull-thickness estimates are compared against CT-derived estimates.
+- BabelBrain simulations are used to estimate trajectory-specific acoustic pressure transmission.
+- The three-layer analytical model is used as a simplified comparison model.
+- All scripts contain additional comments to clarify the workflow.
 
 ---
 
-## Authors
+## Authors for
 
-Moon Jeong
+Moon Jeong  
 Dora Mackie
+
+Credit to: Zadeh et al (2025)
 
 ---
 
 ## References
 
-1. Zadeh AK, Puonti O, Sigurðsson B, Thielscher A, Monchi O, Pichardo S. Enhancing transcranial ultrasound stimulation planning with MRI-derived skull masks: a comparative analysis with CT-based processing. Journal of Neural Engineering. 2025;22:016020. DOI: `10.1088/1741-2552/adab22`
+1. Zadeh AK, Puonti O, Sigurðsson B, Thielscher A, Monchi O, Pichardo S. *Enhancing transcranial ultrasound stimulation planning with MRI-derived skull masks: a comparative analysis with CT-based processing.* Journal of Neural Engineering. 2025;22:016020. DOI: `10.1088/1741-2552/adab22`
 
-2. Attali D, Tiennot T, Schafer M, Fouragnan E, Sallet J, Caskey CF, Chen R, Darmani G, Bubrick EJ, Butler C, Stagg CJ, Klein-Flügge M, Verhagen L, Yoo SS, Butts Pauly K, Aubry JF. Three-layer model with absorption for conservative estimation of the maximum acoustic transmission coefficient through the human skull for transcranial ultrasound stimulation. Brain Stimulation. 2023;16:48–55. DOI: `10.1016/j.brs.2022.12.005`
-
-```
-```
+2. Attali D, Tiennot T, Schafer M, Fouragnan E, Sallet J, Caskey CF, Chen R, Darmani G, Bubrick EJ, Butler C, Stagg CJ, Klein-Flügge M, Verhagen L, Yoo SS, Butts Pauly K, Aubry JF. *Three-layer model with absorption for conservative estimation of the maximum acoustic transmission coefficient through the human skull for transcranial ultrasound stimulation.* Brain Stimulation. 2023;16:48–55. DOI: `10.1016/j.brs.2022.12.005`
