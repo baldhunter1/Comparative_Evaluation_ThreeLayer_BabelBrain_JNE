@@ -1,5 +1,3 @@
-Copy and paste this into `README.md`:
-
 ````markdown
 # Comparative Evaluation of Three-Layer and BabelBrain-Based Skull Transmission Estimates
 
